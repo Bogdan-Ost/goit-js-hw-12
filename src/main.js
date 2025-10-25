@@ -4,6 +4,8 @@ import {
   createGallery,
   showLoader,
   hideLoader,
+  hideLoadMoreButton,
+  showLoadMoreButton,
 } from './js/render-functions';
 
 // Описаний у документації
@@ -36,6 +38,7 @@ function searchWord(event) {
     .then(data => {
       if (data && data.hits) {
         createGallery(data.hits);
+        showLoadMoreButton();
       } else {
         throw new Error(response.status);
       }
