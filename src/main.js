@@ -16,6 +16,7 @@ import 'izitoast/dist/css/iziToast.min.css';
 const form = document.querySelector('.form');
 const input = form.elements['search-text'];
 const moreBtn = document.querySelector('.js-load-more');
+const gallery = document.querySelector('.gallery');
 form.addEventListener('submit', searchWord);
 
 let page = 1;
@@ -48,7 +49,7 @@ function searchWord(event) {
         hideLoadMoreButton();
         throw new Error(response.status);
       }
-      if (data.hits.length < 15) {
+      if (gallery.children.length >= data.totalHits) {
         hideLoadMoreButton();
         iziToast.info({
           message: "We're sorry, but you've reached the end of search results.",
@@ -83,7 +84,7 @@ async function clicLoadMore() {
     const data = await getImagesByQuery(query, page);
     createGallery(data.hits);
 
-    if (data.hits.length < 15) {
+    if (gallery.children.length >= data.totalHits) {
       hideLoadMoreButton();
       iziToast.info({
         message: "We're sorry, but you've reached the end of search results.",
