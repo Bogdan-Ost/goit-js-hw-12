@@ -15,6 +15,8 @@ const form = document.querySelector('.form');
 const input = form.elements['search-text'];
 form.addEventListener('submit', searchWord);
 
+let page = 1;
+
 function searchWord(event) {
   event.preventDefault();
   clearGallery();
@@ -30,7 +32,7 @@ function searchWord(event) {
     return (input.value = '');
   }
 
-  getImagesByQuery(input.value)
+  getImagesByQuery(input.value, page)
     .then(data => {
       if (data && data.hits) {
         createGallery(data.hits);
