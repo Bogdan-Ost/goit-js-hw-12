@@ -93,7 +93,6 @@ async function clicLoadMore() {
       });
     }
     const card = document.querySelector('.galerry-list');
-    console.log(card);
 
     const info = card.getBoundingClientRect();
     const height = info.height;
