@@ -2,8 +2,8 @@ import axios from 'axios';
 
 const KEY = '52797482-aafa905b189c4ff0c9ee358ec';
 
-function getImagesByQuery(query, page) {
-  return axios('https://pixabay.com/api/', {
+async function getImagesByQuery(query, page) {
+  const { data } = await axios('https://pixabay.com/api/', {
     params: {
       key: KEY,
       q: query,
@@ -13,11 +13,8 @@ function getImagesByQuery(query, page) {
       per_page: 15,
       page,
     },
-  }).then(({ data }) => {
-    console.log(data);
-
-    return data;
   });
+  return data;
 }
 
 export { getImagesByQuery, KEY };
