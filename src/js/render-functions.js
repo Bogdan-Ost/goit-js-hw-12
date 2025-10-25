@@ -69,7 +69,7 @@ function showLoadMoreButton() {
 }
 
 function hideLoadMoreButton() {
-  moreBtn.classList.replace('more-hidden', 'load-more-hidden');
+  moreBtn.classList.replace('load-more', 'load-more-hidden');
 }
 
 export {
