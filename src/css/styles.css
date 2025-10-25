@@ -146,3 +146,8 @@ input {
   justify-content: center;
   margin-bottom: 44px;
 }
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+}

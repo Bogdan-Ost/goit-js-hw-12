@@ -42,15 +42,13 @@ function searchWord(event) {
   getImagesByQuery(input.value, page)
     .then(data => {
       if (data && data.hits.length > 0) {
-        console.log(data);
-
         createGallery(data.hits);
         showLoadMoreButton();
       } else {
         hideLoadMoreButton();
         throw new Error(response.status);
       }
-      if (page === data.totalHits) {
+      if (data.hits.length < 15) {
         hideLoadMoreButton();
         iziToast.info({
           message: "We're sorry, but you've reached the end of search results.",
@@ -81,9 +79,11 @@ async function clicLoadMore() {
   moreBtn.disabled = true;
 
   try {
+    showLoader();
     const data = await getImagesByQuery(query, page);
     createGallery(data.hits);
-    if (page >= data.totalHits) {
+
+    if (data.hits.length < 15) {
       hideLoadMoreButton();
       iziToast.info({
         message: "We're sorry, but you've reached the end of search results.",
@@ -91,6 +91,16 @@ async function clicLoadMore() {
         color: 'green',
       });
     }
+    const card = document.querySelector('.galerry-list');
+    console.log(card);
+
+    const info = card.getBoundingClientRect();
+    const height = info.height;
+    window.scrollBy({
+      left: 0,
+      top: height * 2,
+      behavior: 'smooth',
+    });
   } catch (error) {
     iziToast.error({
       message:
@@ -100,5 +110,6 @@ async function clicLoadMore() {
     });
   } finally {
     moreBtn.disabled = false;
+    hideLoader();
   }
 }
