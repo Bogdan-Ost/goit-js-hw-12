@@ -25,7 +25,7 @@ function createGallery(images) {
           comments,
           downloads,
         }) =>
-          `<li class="galerry-list">
+          `<li class="gallery-list">
         
     <a class="gallery-link" href=${largeImageURL}><img class="gallery-img" src=${webformatURL} alt=${tags}></a>
     <div class="gallery-subcontainer">

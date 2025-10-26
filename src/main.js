@@ -92,7 +92,7 @@ async function clicLoadMore() {
         color: 'green',
       });
     }
-    const card = document.querySelector('.galerry-list');
+    const card = document.querySelector('.gallery-list');
 
     const info = card.getBoundingClientRect();
     const height = info.height;
