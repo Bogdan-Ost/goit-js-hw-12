@@ -22,7 +22,7 @@ form.addEventListener('submit', searchWord);
 let page = 1;
 let query = '';
 
-function searchWord(event) {
+async function searchWord(event) {
   event.preventDefault();
   clearGallery();
   showLoader();
@@ -40,35 +40,33 @@ function searchWord(event) {
     return (input.value = '');
   }
   query = input.value;
-  getImagesByQuery(input.value, page)
-    .then(data => {
-      if (data && data.hits.length > 0) {
-        createGallery(data.hits);
-        showLoadMoreButton();
-      } else {
-        hideLoadMoreButton();
-        throw new Error(response.status);
-      }
-      if (gallery.children.length >= data.totalHits) {
-        hideLoadMoreButton();
-        iziToast.info({
-          message: "We're sorry, but you've reached the end of search results.",
-          position: 'topRight',
-          color: 'green',
-        });
-      }
-    })
-    .catch(error =>
-      iziToast.error({
-        message:
-          'Sorry, there are no images matching your search query. Please try again!',
+  const data = await getImagesByQuery(input.value, page);
+  try {
+    if (data && data.hits.length > 0) {
+      createGallery(data.hits);
+      showLoadMoreButton();
+    } else {
+      hideLoadMoreButton();
+      throw new Error(response.status);
+    }
+    if (gallery.children.length >= data.totalHits) {
+      hideLoadMoreButton();
+      iziToast.info({
+        message: "We're sorry, but you've reached the end of search results.",
         position: 'topRight',
-        color: 'red',
-      })
-    )
-    .finally(() => {
-      hideLoader();
+        color: 'green',
+      });
+    }
+  } catch (error) {
+    iziToast.error({
+      message:
+        'Sorry, there are no images matching your search query. Please try again!',
+      position: 'topRight',
+      color: 'red',
     });
+  } finally {
+    hideLoader();
+  }
 
   event.target.reset();
 }
