@@ -40,8 +40,8 @@ async function searchWord(event) {
     return (input.value = '');
   }
   query = input.value;
-  const data = await getImagesByQuery(input.value, page);
   try {
+    const data = await getImagesByQuery(input.value, page);
     if (data && data.hits.length > 0) {
       createGallery(data.hits);
       showLoadMoreButton();
@@ -58,6 +58,7 @@ async function searchWord(event) {
       });
     }
   } catch (error) {
+    hideLoadMoreButton();
     iziToast.error({
       message:
         'Sorry, there are no images matching your search query. Please try again!',
