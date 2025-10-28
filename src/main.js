@@ -37,17 +37,15 @@ async function searchWord(event) {
       position: 'topRight',
       color: 'red',
     });
-    return (input.value = '');
   }
   query = input.value;
   try {
     const data = await getImagesByQuery(input.value, page);
     if (data && data.hits.length > 0) {
       createGallery(data.hits);
-      showLoadMoreButton();
     } else {
       hideLoadMoreButton();
-      throw new Error(response.status);
+      throw new Error();
     }
     if (gallery.children.length >= data.totalHits) {
       hideLoadMoreButton();
@@ -56,6 +54,8 @@ async function searchWord(event) {
         position: 'topRight',
         color: 'green',
       });
+    } else {
+      showLoadMoreButton();
     }
   } catch (error) {
     hideLoadMoreButton();
