@@ -37,7 +37,9 @@ async function searchWord(event) {
       position: 'topRight',
       color: 'red',
     });
+    return (input.value = '');
   }
+
   query = input.value;
   try {
     const data = await getImagesByQuery(input.value, page);
