@@ -24,8 +24,7 @@ let query = '';
 
 async function searchWord(event) {
   event.preventDefault();
-  clearGallery();
-  showLoader();
+
   page = 1;
   if (!input.value.trim()) {
     hideLoader();
@@ -44,6 +43,8 @@ async function searchWord(event) {
   try {
     const data = await getImagesByQuery(input.value, page);
     if (data && data.hits.length > 0) {
+      clearGallery();
+      showLoader();
       createGallery(data.hits);
     } else {
       hideLoadMoreButton();
@@ -78,12 +79,14 @@ moreBtn.addEventListener('click', clicLoadMore);
 
 async function clicLoadMore() {
   page++;
-  moreBtn.disabled = true;
+  hideLoadMoreButton();
 
   try {
     showLoader();
     const data = await getImagesByQuery(query, page);
-    createGallery(data.hits);
+    if (data && data.hits.length > 0) {
+      createGallery(data.hits);
+    }
 
     if (gallery.children.length >= data.totalHits) {
       hideLoadMoreButton();
@@ -110,7 +113,7 @@ async function clicLoadMore() {
       color: 'red',
     });
   } finally {
-    moreBtn.disabled = false;
+    showLoadMoreButton();
     hideLoader();
   }
 }
