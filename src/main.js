@@ -24,6 +24,8 @@ let query = '';
 
 async function searchWord(event) {
   event.preventDefault();
+  clearGallery();
+  showLoader();
 
   page = 1;
   if (!input.value.trim()) {
@@ -43,8 +45,6 @@ async function searchWord(event) {
   try {
     const data = await getImagesByQuery(input.value, page);
     if (data && data.hits.length > 0) {
-      clearGallery();
-      showLoader();
       createGallery(data.hits);
     } else {
       hideLoadMoreButton();
@@ -113,7 +113,6 @@ async function clicLoadMore() {
       color: 'red',
     });
   } finally {
-    showLoadMoreButton();
     hideLoader();
   }
 }
