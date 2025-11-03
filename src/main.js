@@ -25,21 +25,21 @@ let query = '';
 async function searchWord(event) {
   event.preventDefault();
   clearGallery();
-  showLoader();
 
   page = 1;
   if (!input.value.trim()) {
     hideLoader();
     hideLoadMoreButton();
 
-    iziToast.error({
-      message:
-        'Sorry, there are no images matching your search query. Please try again!',
+    iziToast.info({
+      message: 'Please enter a search term',
       position: 'topRight',
-      color: 'red',
+      color: 'green',
     });
-    return (input.value = '');
+    input.value = '';
+    return;
   }
+  showLoader();
 
   query = input.value;
   try {
@@ -48,7 +48,13 @@ async function searchWord(event) {
       createGallery(data.hits);
     } else {
       hideLoadMoreButton();
-      throw new Error();
+      iziToast.error({
+        message:
+          'Sorry, there are no images matching your search query. Please try again!',
+        position: 'topRight',
+        color: 'red',
+      });
+      return;
     }
     if (gallery.children.length >= data.totalHits) {
       hideLoadMoreButton();
@@ -60,26 +66,23 @@ async function searchWord(event) {
     } else {
       showLoadMoreButton();
     }
+    event.target.reset();
   } catch (error) {
     hideLoadMoreButton();
     iziToast.error({
-      message:
-        'Sorry, there are no images matching your search query. Please try again!',
+      message: 'Something went wrong. Try again',
       position: 'topRight',
       color: 'red',
     });
   } finally {
     hideLoader();
   }
-
-  event.target.reset();
 }
 
 moreBtn.addEventListener('click', clicLoadMore);
 
 async function clicLoadMore() {
   page++;
-  hideLoadMoreButton();
 
   try {
     showLoader();
